@@ -1,6 +1,6 @@
 public class Pawn extends ConcretePiece{
 
-    public Pawn(Player player)//helloadawd
+    public Pawn(Player player)
     {
         this.player=player;
         if(this.player.isPlayerOne())

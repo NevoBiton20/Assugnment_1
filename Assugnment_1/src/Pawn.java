@@ -11,7 +11,10 @@ public class Pawn extends ConcretePiece{
         {
             this.type="♙";
         }
-
     }
 
+    @Override
+    public String getId() {
+        return super.getId();
+    }
 }

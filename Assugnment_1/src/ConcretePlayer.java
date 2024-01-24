@@ -3,12 +3,12 @@ import java.util.Stack;
 public class ConcretePlayer implements Player{
     private int wins;
     private final boolean playerSide;
-    private Stack<Piece[]> eaten;
+    private Stack<ConcretePiece[]> eaten;
 
     public ConcretePlayer(boolean playerSide) {
         this.playerSide = playerSide;
         this.wins=0;
-        eaten = new Stack<Piece[]>();
+        eaten = new Stack<ConcretePiece[]>();
     }
 
     @Override

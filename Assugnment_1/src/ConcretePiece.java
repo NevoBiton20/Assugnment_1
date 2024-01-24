@@ -6,7 +6,7 @@ public abstract class ConcretePiece implements Piece{
     protected  int distance = 0;
     protected Player player;
     protected String type;
-    protected Stack<Position> places;
+    protected Stack<Position> places = new Stack<Position>();
     protected String id;
     protected int killCount = 0;
     public void setId(String id) {
@@ -28,8 +28,11 @@ public abstract class ConcretePiece implements Piece{
     }
     public void printPlaces(){
         while (!places.isEmpty()){
-            System.out.println(places.pop());
+            System.out.print(places.pop()+ " ");
         }
+    }
+    public void addPlace(Position position){
+        this.places.push(position);
     }
     @Override
     public Player getOwner() {

@@ -1,17 +1,19 @@
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Stack;
 
 public class GameLogic implements PlayableLogic {
     private final int BOARD_SIZE = 11;
-    private final ConcretePlayer p1 = new ConcretePlayer(true);
-    private final ConcretePlayer p2 = new ConcretePlayer(false);
+    private final ConcretePlayer p1 = new ConcretePlayer(false);
+    private final ConcretePlayer p2 = new ConcretePlayer(true);
     private ConcretePiece[][] gameBoard;
     private boolean turn;
     private Position kingP;
 
     public GameLogic() {
         gameBoard = new ConcretePiece[this.BOARD_SIZE][this.BOARD_SIZE];
-        turn = true;
+        turn = false;
         kingP = new Position(5, 5);
         int j = 1;
         int k = 20;
@@ -93,7 +95,9 @@ public class GameLogic implements PlayableLogic {
         if (!isLegal(a, b)) {
             return false;
         }
+        int d = calcDistance(a,b);
         gameBoard[b.getRow()][b.getCul()] = gameBoard[a.getRow()][a.getCul()];
+        gameBoard[b.getRow()][b.getCul()].addDistance(d);
         gameBoard[a.getRow()][a.getCul()] = null;
         turn = !turn;
         if (gameBoard[b.getRow()][b.getCul()].getType().equals("♔")) {
@@ -107,6 +111,7 @@ public class GameLogic implements PlayableLogic {
                 if ((b.getCul() == getBoardSize() - 2) || (b.getCul() < getBoardSize() - 2 && ((gameBoard[b.getRow()][b.getCul() + 2] != null) && (gameBoard[b.getRow()][b.getCul() + 2].getType().equals(eater))))) {
                     if (!gameBoard[b.getRow()][b.getCul() + 1].getType().equals("♔")) {
                         gameBoard[b.getRow()][b.getCul() + 1] = null;
+                        gameBoard[b.getRow()][b.getCul()].addKill();
 
                     }
                 }
@@ -115,7 +120,7 @@ public class GameLogic implements PlayableLogic {
                 if ((b.getRow() - 1 == 0) || (b.getRow() > 1 && (gameBoard[b.getRow() - 2][b.getCul()] != null) && (gameBoard[b.getRow() - 2][b.getCul()].getType().equals(eater)))) {
                     if (!gameBoard[b.getRow() - 1][b.getCul()].getType().equals("♔")) {
                         gameBoard[b.getRow() - 1][b.getCul()] = null;
-
+                        gameBoard[b.getRow()][b.getCul()].addKill();
                     }
                 }
             }
@@ -123,6 +128,7 @@ public class GameLogic implements PlayableLogic {
                 if ((b.getCul() - 1 == 0) || (b.getCul() > 1 && (gameBoard[b.getRow()][b.getCul() - 2] != null) && (gameBoard[b.getRow()][b.getCul() - 2].getType().equals(eater)))) {
                     if (!gameBoard[b.getRow()][b.getCul() - 1].getType().equals("♔")) {
                         gameBoard[b.getRow()][b.getCul() - 1] = null;
+                        gameBoard[b.getRow()][b.getCul()].addKill();
 
                     }
                 }
@@ -133,6 +139,7 @@ public class GameLogic implements PlayableLogic {
                 if ((b.getCul() == getBoardSize() - 2) || (b.getCul() < getBoardSize() - 2 && ((gameBoard[b.getRow()][b.getCul() + 2] != null) && (gameBoard[b.getRow()][b.getCul() + 2].getType().equals(eater))))) {
                     if (!gameBoard[b.getRow()][b.getCul() + 1].getType().equals("♔")) {
                         gameBoard[b.getRow()][b.getCul() + 1] = null;
+                        gameBoard[b.getRow()][b.getCul()].addKill();
 
                     }
                 }
@@ -141,6 +148,7 @@ public class GameLogic implements PlayableLogic {
                 if ((b.getRow() == getBoardSize() - 2) || (b.getRow() < getBoardSize() - 2 && (gameBoard[b.getRow() + 2][b.getCul()] != null) && (gameBoard[b.getRow() + 2][b.getCul()].getType().equals(eater)))) {
                     if (!gameBoard[b.getRow() + 1][b.getCul()].getType().equals("♔")) {
                         gameBoard[b.getRow() + 1][b.getCul()] = null;
+                        gameBoard[b.getRow()][b.getCul()].addKill();
 
                     }
                 }
@@ -149,6 +157,7 @@ public class GameLogic implements PlayableLogic {
                 if ((b.getCul() - 1 == 0) || (b.getCul() > 1 && (gameBoard[b.getRow()][b.getCul() - 2] != null) && (gameBoard[b.getRow()][b.getCul() - 2].getType().equals(eater)))) {
                     if (!gameBoard[b.getRow()][b.getCul() - 1].getType().equals("♔")) {
                         gameBoard[b.getRow()][b.getCul() - 1] = null;
+                        gameBoard[b.getRow()][b.getCul()].addKill();
 
                     }
                 }
@@ -160,6 +169,7 @@ public class GameLogic implements PlayableLogic {
                     if ((b.getRow() == getBoardSize() - 2) || (b.getRow() < getBoardSize() - 2 && (gameBoard[b.getRow() + 2][b.getCul()] != null) && (gameBoard[b.getRow() + 2][b.getCul()].getType().equals(eater)))) {
                         if (!gameBoard[b.getRow() + 1][b.getCul()].getType().equals("♔")) {
                             gameBoard[b.getRow() + 1][b.getCul()] = null;
+                            gameBoard[b.getRow()][b.getCul()].addKill();
 
                         }
                     }
@@ -168,6 +178,7 @@ public class GameLogic implements PlayableLogic {
                     if ((b.getRow() - 1 == 0) || (b.getRow() > 1 && (gameBoard[b.getRow() - 2][b.getCul()] != null) && (gameBoard[b.getRow() - 2][b.getCul()].getType().equals(eater)))) {
                         if (!gameBoard[b.getRow() - 1][b.getCul()].getType().equals("♔")) {
                             gameBoard[b.getRow() - 1][b.getCul()] = null;
+                            gameBoard[b.getRow()][b.getCul()].addKill();
 
                         }
                     }
@@ -176,6 +187,7 @@ public class GameLogic implements PlayableLogic {
                     if ((b.getCul() - 1 == 0) || (b.getCul() > 1 && (gameBoard[b.getRow()][b.getCul() - 2] != null) && (gameBoard[b.getRow()][b.getCul() - 2].getType().equals(eater)))) {
                         if (!gameBoard[b.getRow()][b.getCul() - 1].getType().equals("♔")) {
                             gameBoard[b.getRow()][b.getCul() - 1] = null;
+                            gameBoard[b.getRow()][b.getCul()].addKill();
 
                         }
                     }
@@ -186,6 +198,7 @@ public class GameLogic implements PlayableLogic {
                     if ((b.getRow() == getBoardSize() - 2) || (b.getRow() < getBoardSize() - 2 && (gameBoard[b.getRow() + 2][b.getCul()] != null) && (gameBoard[b.getRow() + 2][b.getCul()].getType().equals(eater)))) {
                         if (!gameBoard[b.getRow() + 1][b.getCul()].getType().equals("♔")) {
                             gameBoard[b.getRow() + 1][b.getCul()] = null;
+                            gameBoard[b.getRow()][b.getCul()].addKill();
 
                         }
                     }
@@ -194,6 +207,7 @@ public class GameLogic implements PlayableLogic {
                     if ((b.getRow() - 1 == 0) || (b.getRow() > 1 && (gameBoard[b.getRow() - 2][b.getCul()] != null) && (gameBoard[b.getRow() - 2][b.getCul()].getType().equals(eater)))) {
                         if (!gameBoard[b.getRow() - 1][b.getCul()].getType().equals("♔")) {
                             gameBoard[b.getRow() - 1][b.getCul()] = null;
+                            gameBoard[b.getRow()][b.getCul()].addKill();
 
                         }
                     }
@@ -202,6 +216,7 @@ public class GameLogic implements PlayableLogic {
                     if ((b.getCul() == getBoardSize() - 2) || (b.getCul() < getBoardSize() - 2 && ((gameBoard[b.getRow()][b.getCul() + 2] != null) && (gameBoard[b.getRow()][b.getCul() + 2].getType().equals(eater))))) {
                         if (!gameBoard[b.getRow()][b.getCul() + 1].getType().equals("♔")) {
                             gameBoard[b.getRow()][b.getCul() + 1] = null;
+                            gameBoard[b.getRow()][b.getCul()].addKill();
 
                         }
                     }
@@ -298,7 +313,7 @@ public class GameLogic implements PlayableLogic {
     @Override
     public void reset() {
         gameBoard = new ConcretePiece[this.BOARD_SIZE][this.BOARD_SIZE];
-        turn = true;
+        turn = false;
         kingP = new Position(5, 5);
         int j = 1;
         int k = 20;
@@ -325,53 +340,54 @@ public class GameLogic implements PlayableLogic {
         gameBoard[1][5].setId("A12");
 
         gameBoard[5][1] = new Pawn(p1);
-        gameBoard[1][5].setId("A6");
+        gameBoard[5][1].setId("A6");
 
         gameBoard[9][5] = new Pawn(p1);
-        gameBoard[1][5].setId("A13");
+        gameBoard[9][5].setId("A13");
 
         gameBoard[5][9] = new Pawn(p1);
-        gameBoard[1][5].setId("A19");
+        gameBoard[5][9].setId("A19");
 
 
         gameBoard[3][5] = new Pawn(p2);
-        gameBoard[1][5].setId("D5");
+        gameBoard[3][5].setId("D5");
 
         gameBoard[4][4] = new Pawn(p2);
-        gameBoard[1][5].setId("D2");
+        gameBoard[4][4].setId("D2");
 
         gameBoard[4][5] = new Pawn(p2);
-        gameBoard[1][5].setId("D6");
+        gameBoard[4][5].setId("D6");
 
         gameBoard[4][6] = new Pawn(p2);
-        gameBoard[1][5].setId("D10");
+        gameBoard[4][6].setId("D10");
 
         gameBoard[5][3] = new Pawn(p2);
-        gameBoard[1][5].setId("D1");
+        gameBoard[5][3].setId("D1");
 
         gameBoard[5][4] = new Pawn(p2);
-        gameBoard[1][5].setId("D3");
+        gameBoard[5][4].setId("D3");
 
         gameBoard[5][5] = new King(p2);
-        gameBoard[1][5].setId("D7");
+        gameBoard[5][5].setId("D7");
 
         gameBoard[5][6] = new Pawn(p2);
-        gameBoard[1][5].setId("D11");
+        gameBoard[5][6].setId("D11");
 
         gameBoard[5][7] = new Pawn(p2);
-        gameBoard[1][5].setId("D13");
+        gameBoard[5][7].setId("D13");
 
         gameBoard[6][4] = new Pawn(p2);
-        gameBoard[1][5].setId("D4");
+        gameBoard[6][4].setId("D4");
 
         gameBoard[6][5] = new Pawn(p2);
-        gameBoard[1][5].setId("D8");
+        gameBoard[6][5].setId("D8");
 
         gameBoard[6][6] = new Pawn(p2);
-        gameBoard[1][5].setId("D12");
+        gameBoard[6][6].setId("D12");
 
         gameBoard[7][5] = new Pawn(p2);
-        gameBoard[1][5].setId("D9");
+        gameBoard[7][5].setId("D9");
+        printBoard();
 
     }
 
@@ -389,13 +405,89 @@ public class GameLogic implements PlayableLogic {
     class SortByMoves implements Comparator<ConcretePiece> {
         public int compare(ConcretePiece a, ConcretePiece b) {
 
-            return a.places.size() - b.places.size();
+            return Integer.compare(a.getPlaces().size(), b.getPlaces().size());
         }
     }
     class SortByEaten implements Comparator<ConcretePiece>{
         public int compare(ConcretePiece a, ConcretePiece b) {
 
-            return a.getKillCount()-b.getKillCount();
+            return Integer.compare(b.getKillCount(),a.getKillCount());
+        }
+    }
+    class SortByDistance implements Comparator<ConcretePiece>{
+        public int compare(ConcretePiece a, ConcretePiece b) {
+
+            return Integer.compare(a.getDistance(),b.getDistance());
+        }
+    }
+
+    public void printBoard() {
+        System.out.println("  0 1 2 3 4 5 6 7 8 9 10");
+        for (int i = 0; i < getBoardSize(); i++) {
+            System.out.print(i + "              ");
+            for (int j = 0; j < getBoardSize(); j++) {
+                if (gameBoard[i][j] == null) {
+                    System.out.print("              ");
+                } else {
+                    System.out.print(gameBoard[i][j].getId() + "              ");
+                }
+            }
+            System.out.println();
+        }
+    }
+
+    public void printByMoves(boolean turn) {
+        ArrayList<ConcretePiece> pieces = new ArrayList<>();
+        for (int i = 0; i < getBoardSize(); i++) {
+            for (int j = 0; j < getBoardSize(); j++) {
+                if (gameBoard[i][j] != null) {
+                    if (turn && gameBoard[i][j].getOwner().isPlayerOne() || !turn && !gameBoard[i][j].getOwner().isPlayerOne()) {
+                        pieces.add(gameBoard[i][j]);
+                    }
+                }
+            }
+        }
+        pieces.sort(new SortByMoves());
+        for(int i = 0; i < pieces.size(); i++){
+            System.out.println(pieces.get(i).getId() + ": [" + pieces.get(i).places.toString());
+        }
+        System.out.println("]");
+
+    }
+
+    public void printByEaten(boolean turn) {
+        ArrayList<ConcretePiece> pieces = new ArrayList<>();
+        for (int i = 0; i < getBoardSize(); i++) {
+            for (int j = 0; j < getBoardSize(); j++) {
+                if (gameBoard[i][j] != null) {
+                    pieces.add(gameBoard[i][j]);
+
+                }
+            }
+        }
+        pieces.sort(new SortByEaten());
+        for(int i = 0; i < pieces.size(); i++){
+            System.out.println(pieces.get(i).getId() + ": " + pieces.get(i).getKillCount()+ " kills");
+        }
+    }
+
+    public int calcDistance(Position a, Position b){
+        return Math.abs(a.getCul()-b.getCul())+Math.abs(a.getRow()-b.getRow());
+    }
+    public void sortPiecesByDistance(boolean turn){
+        ArrayList<ConcretePiece> pieces = new ArrayList<>();
+        for (int i = 0; i < getBoardSize(); i++) {
+            for (int j = 0; j < getBoardSize(); j++) {
+                if (gameBoard[i][j] != null) {
+                    if (turn && gameBoard[i][j].getOwner().isPlayerOne() || !turn && !gameBoard[i][j].getOwner().isPlayerOne()) {
+                        pieces.add(gameBoard[i][j]);
+                    }
+                }
+            }
+        }
+        pieces.sort(new SortByDistance());
+        for(int i = 0; i < pieces.size(); i++){
+            System.out.println(pieces.get(i).getId() + ": " + pieces.get(i).getDistance()+ " distance");
         }
     }
 }

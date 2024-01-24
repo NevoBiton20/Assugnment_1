@@ -5,11 +5,11 @@ public class Pawn extends ConcretePiece{
         this.player=player;
         if(this.player.isPlayerOne())
         {
-            this.type="♟";
+            this.type="♙";
         }
         else
         {
-            this.type="♙";
+            this.type="♟";
         }
     }
 

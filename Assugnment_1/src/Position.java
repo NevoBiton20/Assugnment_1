@@ -14,4 +14,10 @@ public class Position {
     public int getCul() {
         return this.cul;
     }
+
+    public String toString() {
+        return "(" + this.row + ", " + this.cul + "), ";
+    }
 }
+
+

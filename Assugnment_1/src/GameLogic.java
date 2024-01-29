@@ -20,73 +20,73 @@ public class GameLogic implements PlayableLogic {
         int l = 7;
         for (int i = 3; i < 8; i++) {
             gameBoard[0][i] = new Pawn(p1);
-            gameBoard[0][i].setId("A" + l);
+            gameBoard[0][i].setId("A" + l,l);
 
             l++;
             if (l == 12) {
                 l = 14;
             }
             gameBoard[i][0] = new Pawn(p1);
-            gameBoard[i][0].setId("A" + j);
+            gameBoard[i][0].setId("A" + j,j);
             j++;
             gameBoard[this.BOARD_SIZE - 1][i] = new Pawn(p1);
-            gameBoard[this.BOARD_SIZE - 1][i].setId("A" + l);
+            gameBoard[this.BOARD_SIZE - 1][i].setId("A" + l,l);
             l++;
             gameBoard[i][this.BOARD_SIZE - 1] = new Pawn(p1);
-            gameBoard[i][this.BOARD_SIZE - 1].setId("A" + k);
+            gameBoard[i][this.BOARD_SIZE - 1].setId("A" + k,k);
             k++;
         }
         gameBoard[1][5] = new Pawn(p1);
-        gameBoard[1][5].setId("A12");
+        gameBoard[1][5].setId("A12",12);
 
         gameBoard[5][1] = new Pawn(p1);
-        gameBoard[5][1].setId("A6");
+        gameBoard[5][1].setId("A6",6);
 
         gameBoard[9][5] = new Pawn(p1);
-        gameBoard[9][5].setId("A13");
+        gameBoard[9][5].setId("A13",13);
 
         gameBoard[5][9] = new Pawn(p1);
-        gameBoard[5][9].setId("A19");
+        gameBoard[5][9].setId("A19",19);
 
 
         gameBoard[3][5] = new Pawn(p2);
-        gameBoard[3][5].setId("D5");
+        gameBoard[3][5].setId("D5",5);
 
         gameBoard[4][4] = new Pawn(p2);
-        gameBoard[4][4].setId("D2");
+        gameBoard[4][4].setId("D2",2);
 
         gameBoard[4][5] = new Pawn(p2);
-        gameBoard[4][5].setId("D6");
+        gameBoard[4][5].setId("D6",6);
 
         gameBoard[4][6] = new Pawn(p2);
-        gameBoard[4][6].setId("D10");
+        gameBoard[4][6].setId("D10",10);
 
         gameBoard[5][3] = new Pawn(p2);
-        gameBoard[5][3].setId("D1");
+        gameBoard[5][3].setId("D1",1);
 
         gameBoard[5][4] = new Pawn(p2);
-        gameBoard[5][4].setId("D3");
+        gameBoard[5][4].setId("D3",3);
 
         gameBoard[5][5] = new King(p2);
-        gameBoard[5][5].setId("D7");
+        gameBoard[5][5].setId("D7",7);
 
         gameBoard[5][6] = new Pawn(p2);
-        gameBoard[5][6].setId("D11");
+        gameBoard[5][6].setId("D11",11);
 
         gameBoard[5][7] = new Pawn(p2);
-        gameBoard[5][7].setId("D13");
+        gameBoard[5][7].setId("D13",13);
 
         gameBoard[6][4] = new Pawn(p2);
-        gameBoard[6][4].setId("D4");
+        gameBoard[6][4].setId("D4",4);
 
         gameBoard[6][5] = new Pawn(p2);
-        gameBoard[6][5].setId("D8");
+        gameBoard[6][5].setId("D8",8);
 
         gameBoard[6][6] = new Pawn(p2);
-        gameBoard[6][6].setId("D12");
+        gameBoard[6][6].setId("D12",12);
 
         gameBoard[7][5] = new Pawn(p2);
-        gameBoard[7][5].setId("D9");
+        gameBoard[7][5].setId("D9",9);
 
     }
 
@@ -317,7 +317,7 @@ public class GameLogic implements PlayableLogic {
     @Override
     public void reset() {
         printByMoves(!turn);
-        printByEaten();
+        printByEaten(!turn);
         printPiecesByDistance();
         gameBoard = new ConcretePiece[this.BOARD_SIZE][this.BOARD_SIZE];
         turn = false;
@@ -327,74 +327,74 @@ public class GameLogic implements PlayableLogic {
         int l = 7;
         for (int i = 3; i < 8; i++) {
             gameBoard[0][i] = new Pawn(p1);
-            gameBoard[0][i].setId("A" + l);
+            gameBoard[0][i].setId("A" + l,l);
 
             l++;
             if (l == 12) {
                 l = 14;
             }
             gameBoard[i][0] = new Pawn(p1);
-            gameBoard[i][0].setId("A" + j);
+            gameBoard[i][0].setId("A" + j,j);
             j++;
             gameBoard[this.BOARD_SIZE - 1][i] = new Pawn(p1);
-            gameBoard[this.BOARD_SIZE - 1][i].setId("A" + l);
+            gameBoard[this.BOARD_SIZE - 1][i].setId("A" + l,l);
             l++;
             gameBoard[i][this.BOARD_SIZE - 1] = new Pawn(p1);
-            gameBoard[i][this.BOARD_SIZE - 1].setId("A" + k);
+            gameBoard[i][this.BOARD_SIZE - 1].setId("A" + k,k);
             k++;
         }
         gameBoard[1][5] = new Pawn(p1);
-        gameBoard[1][5].setId("A12");
+        gameBoard[1][5].setId("A12",12);
 
         gameBoard[5][1] = new Pawn(p1);
-        gameBoard[5][1].setId("A6");
+        gameBoard[5][1].setId("A6",6);
 
         gameBoard[9][5] = new Pawn(p1);
-        gameBoard[9][5].setId("A13");
+        gameBoard[9][5].setId("A13",13);
 
         gameBoard[5][9] = new Pawn(p1);
-        gameBoard[5][9].setId("A19");
+        gameBoard[5][9].setId("A19",19);
 
 
         gameBoard[3][5] = new Pawn(p2);
-        gameBoard[3][5].setId("D5");
+        gameBoard[3][5].setId("D5",5);
 
         gameBoard[4][4] = new Pawn(p2);
-        gameBoard[4][4].setId("D2");
+        gameBoard[4][4].setId("D2",2);
 
         gameBoard[4][5] = new Pawn(p2);
-        gameBoard[4][5].setId("D6");
+        gameBoard[4][5].setId("D6",6);
 
         gameBoard[4][6] = new Pawn(p2);
-        gameBoard[4][6].setId("D10");
+        gameBoard[4][6].setId("D10",10);
 
         gameBoard[5][3] = new Pawn(p2);
-        gameBoard[5][3].setId("D1");
+        gameBoard[5][3].setId("D1",1);
 
         gameBoard[5][4] = new Pawn(p2);
-        gameBoard[5][4].setId("D3");
+        gameBoard[5][4].setId("D3",3);
 
         gameBoard[5][5] = new King(p2);
-        gameBoard[5][5].setId("D7");
+        gameBoard[5][5].setId("D7",7);
 
         gameBoard[5][6] = new Pawn(p2);
-        gameBoard[5][6].setId("D11");
+        gameBoard[5][6].setId("D11",11);
 
         gameBoard[5][7] = new Pawn(p2);
-        gameBoard[5][7].setId("D13");
+        gameBoard[5][7].setId("D13",13);
 
         gameBoard[6][4] = new Pawn(p2);
-        gameBoard[6][4].setId("D4");
+        gameBoard[6][4].setId("D4",4);
 
         gameBoard[6][5] = new Pawn(p2);
-        gameBoard[6][5].setId("D8");
+        gameBoard[6][5].setId("D8",8);
 
         gameBoard[6][6] = new Pawn(p2);
-        gameBoard[6][6].setId("D12");
+        gameBoard[6][6].setId("D12",12);
 
         gameBoard[7][5] = new Pawn(p2);
-        gameBoard[7][5].setId("D9");
-        //printBoard();
+        gameBoard[7][5].setId("D9",9);
+
 
 
     }
@@ -412,20 +412,30 @@ public class GameLogic implements PlayableLogic {
 
     class SortByMoves implements Comparator<ConcretePiece> {
         public int compare(ConcretePiece a, ConcretePiece b) {
-
-            return Integer.compare(a.getPlaces().size(), b.getPlaces().size());
+            int cm = Integer.compare(a.getPlaces().size(), b.getPlaces().size());
+            if (cm == 0) {
+                return Integer.compare(b.getNummericid(), a.getNummericid());
+            }
+            return cm;
         }
     }
     class SortByEaten implements Comparator<ConcretePiece>{
         public int compare(ConcretePiece a, ConcretePiece b) {
-
-            return Integer.compare(b.getKillCount(),a.getKillCount());
+            int cm = Integer.compare(a.getKillCount(), b.getKillCount());
+            if (cm == 0) {
+                return Integer.compare(b.getNummericid(), a.getNummericid());
+            }
+            return cm;
         }
     }
     class SortByDistance implements Comparator<ConcretePiece>{
         public int compare(ConcretePiece a, ConcretePiece b) {
 
-            return Integer.compare(a.getDistance(),b.getDistance());
+            int cm = Integer.compare(a.getDistance(), b.getDistance());
+            if (cm == 0) {
+                return Integer.compare(b.getNummericid(), a.getNummericid());
+            }
+            return cm;
         }
     }
 
@@ -449,23 +459,31 @@ public class GameLogic implements PlayableLogic {
         for (int i = 0; i < getBoardSize(); i++) {
             for (int j = 0; j < getBoardSize(); j++) {
                 if (gameBoard[i][j] != null) {
-                    if (turn && gameBoard[i][j].getOwner().isPlayerOne() || !turn && !gameBoard[i][j].getOwner().isPlayerOne()) {
+
                         pieces.add(gameBoard[i][j]);
-                    }
+
                 }
             }
         }
+        boolean currentP =!turn;
         pieces.sort(new SortByMoves());
-        for(int i = 0; i < pieces.size(); i++){
-            if (!pieces.get(i).getPlaces().isEmpty()) {
+        for(int i = pieces.size()-1; i >0; i--){
+            if (!pieces.get(i).getPlaces().isEmpty() &&pieces.get(i).getOwner().isPlayerOne()==!currentP) {
                 System.out.print(pieces.get(i).getId() + ": " + pieces.get(i).places.toString()+"\n");
             }
         }
-        System.out.print("]\n");
+
+        for(int i = pieces.size()-1; i >0; i--){
+            if (!pieces.get(i).getPlaces().isEmpty() &&pieces.get(i).getOwner().isPlayerOne()==currentP) {
+                System.out.print(pieces.get(i).getId() + ": " + pieces.get(i).places.toString()+"\n");
+            }
+        }
+
+        System.out.print("\n");
 
     }
 
-    public void printByEaten() {
+    public void printByEaten(boolean turn) {
         ArrayList<ConcretePiece> pieces = new ArrayList<>();
         for (int i = 0; i < getBoardSize(); i++) {
             for (int j = 0; j < getBoardSize(); j++) {

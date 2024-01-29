@@ -8,9 +8,17 @@ public abstract class ConcretePiece implements Piece{
     protected String type;
     protected Stack<Position> places = new Stack<Position>();
     protected String id;
+
+    public int getNummericid() {
+        return nummericid;
+    }
+
+    protected int nummericid;
     protected int killCount = 0;
-    public void setId(String id) {
+    public void setId(String id , int nummericid) {
         this.id = id;
+        this.nummericid = nummericid;
+
     }
 
     public String getId() {

@@ -12,7 +12,6 @@ public class GameLogic implements PlayableLogic {
     private boolean turn;
     private Position kingP;
     private ArrayList<ConcretePiece> pieces;
-    //private ArrayList<Position> steppedOn;
 
     public GameLogic() {
         reset();
@@ -33,16 +32,15 @@ public class GameLogic implements PlayableLogic {
         gameBoard[b.getRow()][b.getCul()].addPlace(b);
         posC[b.getRow()][b.getCul()].addStepped();
 
-
-
-
         gameBoard[a.getRow()][a.getCul()] = null;
-        gameBoard[b.getRow()][b.getCul()].getPlaces().push(new Position(b.getRow(),b.getCul()));
         eatAr[0] = gameBoard[b.getRow()][b.getCul()];
-        
+
         if (gameBoard[b.getRow()][b.getCul()].getType().equals("♔")) {
             kingP = new Position(b.getRow(), b.getCul());
             isGameFinished();
+
+            turn = !turn;
+            p1.getEaten().push(eatAr);
             return true;
         }
         String eater = gameBoard[b.getRow()][b.getCul()].getType(); //capture check: fix can eat king
@@ -61,7 +59,7 @@ public class GameLogic implements PlayableLogic {
             if (b.getRow() > 0 && (gameBoard[b.getRow() - 1][b.getCul()] != null) && (!gameBoard[b.getRow() - 1][b.getCul()].getType().equals(eater))) {
                 if ((b.getRow() - 1 == 0) || (b.getRow() > 1 && (gameBoard[b.getRow() - 2][b.getCul()] != null) && (gameBoard[b.getRow() - 2][b.getCul()].getType().equals(eater)))) {
                     if (!gameBoard[b.getRow() - 1][b.getCul()].getType().equals("♔")) {
-                        eatAr[2] = gameBoard[b.getRow()][b.getCul() + 1];
+                        eatAr[2] = gameBoard[b.getRow()-1][b.getCul()];
                         gameBoard[b.getRow() - 1][b.getCul()] = null;
                         gameBoard[b.getRow()][b.getCul()].addKill();
                     }
@@ -70,7 +68,7 @@ public class GameLogic implements PlayableLogic {
             if (b.getCul() > 0 && (gameBoard[b.getRow()][b.getCul() - 1] != null) && (!gameBoard[b.getRow()][b.getCul() - 1].getType().equals(eater))) {
                 if ((b.getCul() - 1 == 0) || (b.getCul() > 1 && (gameBoard[b.getRow()][b.getCul() - 2] != null) && (gameBoard[b.getRow()][b.getCul() - 2].getType().equals(eater)))) {
                     if (!gameBoard[b.getRow()][b.getCul() - 1].getType().equals("♔")) {
-                        eatAr[3] = gameBoard[b.getRow()][b.getCul() + 1];
+                        eatAr[3] = gameBoard[b.getRow()][b.getCul()-1];
                         gameBoard[b.getRow()][b.getCul() - 1] = null;
                         gameBoard[b.getRow()][b.getCul()].addKill();
 
@@ -92,7 +90,7 @@ public class GameLogic implements PlayableLogic {
             if (b.getRow() < getBoardSize() - 1 && (gameBoard[b.getRow() + 1][b.getCul()] != null) && (!gameBoard[b.getRow() + 1][b.getCul()].getType().equals(eater))) {
                 if ((b.getRow() == getBoardSize() - 2) || (b.getRow() < getBoardSize() - 2 && (gameBoard[b.getRow() + 2][b.getCul()] != null) && (gameBoard[b.getRow() + 2][b.getCul()].getType().equals(eater)))) {
                     if (!gameBoard[b.getRow() + 1][b.getCul()].getType().equals("♔")) {
-                        eatAr[2] = gameBoard[b.getRow()][b.getCul() + 1];
+                        eatAr[2] = gameBoard[b.getRow()+1][b.getCul() ];
                         gameBoard[b.getRow() + 1][b.getCul()] = null;
                         gameBoard[b.getRow()][b.getCul()].addKill();
 
@@ -102,7 +100,7 @@ public class GameLogic implements PlayableLogic {
             if (b.getCul() > 0 && (gameBoard[b.getRow()][b.getCul() - 1] != null) && (!gameBoard[b.getRow()][b.getCul() - 1].getType().equals(eater))) {
                 if ((b.getCul() - 1 == 0) || (b.getCul() > 1 && (gameBoard[b.getRow()][b.getCul() - 2] != null) && (gameBoard[b.getRow()][b.getCul() - 2].getType().equals(eater)))) {
                     if (!gameBoard[b.getRow()][b.getCul() - 1].getType().equals("♔")) {
-                        eatAr[3] = gameBoard[b.getRow()][b.getCul() + 1];
+                        eatAr[3] = gameBoard[b.getRow()][b.getCul() - 1];
                         gameBoard[b.getRow()][b.getCul() - 1] = null;
                         gameBoard[b.getRow()][b.getCul()].addKill();
 
@@ -115,7 +113,7 @@ public class GameLogic implements PlayableLogic {
                 if (b.getRow() < getBoardSize() - 1 && (gameBoard[b.getRow() + 1][b.getCul()] != null) && (!gameBoard[b.getRow() + 1][b.getCul()].getType().equals(eater))) {
                     if ((b.getRow() == getBoardSize() - 2) || (b.getRow() < getBoardSize() - 2 && (gameBoard[b.getRow() + 2][b.getCul()] != null) && (gameBoard[b.getRow() + 2][b.getCul()].getType().equals(eater)))) {
                         if (!gameBoard[b.getRow() + 1][b.getCul()].getType().equals("♔")) {
-                            eatAr[1] = gameBoard[b.getRow()][b.getCul() + 1];
+                            eatAr[1] = gameBoard[b.getRow()+1][b.getCul()];
                             gameBoard[b.getRow() + 1][b.getCul()] = null;
                             gameBoard[b.getRow()][b.getCul()].addKill();
 
@@ -125,7 +123,7 @@ public class GameLogic implements PlayableLogic {
                 if (b.getRow() > 0 && (gameBoard[b.getRow() - 1][b.getCul()] != null) && (!gameBoard[b.getRow() - 1][b.getCul()].getType().equals(eater))) {
                     if ((b.getRow() - 1 == 0) || (b.getRow() > 1 && (gameBoard[b.getRow() - 2][b.getCul()] != null) && (gameBoard[b.getRow() - 2][b.getCul()].getType().equals(eater)))) {
                         if (!gameBoard[b.getRow() - 1][b.getCul()].getType().equals("♔")) {
-                            eatAr[2] = gameBoard[b.getRow()][b.getCul() + 1];
+                            eatAr[2] = gameBoard[b.getRow()-1][b.getCul()];
                             gameBoard[b.getRow() - 1][b.getCul()] = null;
                             gameBoard[b.getRow()][b.getCul()].addKill();
 
@@ -135,7 +133,7 @@ public class GameLogic implements PlayableLogic {
                 if (b.getCul() > 0 && (gameBoard[b.getRow()][b.getCul() - 1] != null) && (!gameBoard[b.getRow()][b.getCul() - 1].getType().equals(eater))) {
                     if ((b.getCul() - 1 == 0) || (b.getCul() > 1 && (gameBoard[b.getRow()][b.getCul() - 2] != null) && (gameBoard[b.getRow()][b.getCul() - 2].getType().equals(eater)))) {
                         if (!gameBoard[b.getRow()][b.getCul() - 1].getType().equals("♔")) {
-                            eatAr[3] = gameBoard[b.getRow()][b.getCul() + 1];
+                            eatAr[3] = gameBoard[b.getRow()][b.getCul() - 1];
                             gameBoard[b.getRow()][b.getCul() - 1] = null;
                             gameBoard[b.getRow()][b.getCul()].addKill();
 
@@ -147,7 +145,7 @@ public class GameLogic implements PlayableLogic {
                 if (b.getRow() < getBoardSize() - 1 && (gameBoard[b.getRow() + 1][b.getCul()] != null) && (!gameBoard[b.getRow() + 1][b.getCul()].getType().equals(eater))) {
                     if ((b.getRow() == getBoardSize() - 2) || (b.getRow() < getBoardSize() - 2 && (gameBoard[b.getRow() + 2][b.getCul()] != null) && (gameBoard[b.getRow() + 2][b.getCul()].getType().equals(eater)))) {
                         if (!gameBoard[b.getRow() + 1][b.getCul()].getType().equals("♔")) {
-                            eatAr[1] = gameBoard[b.getRow()][b.getCul() + 1];
+                            eatAr[1] = gameBoard[b.getRow()+1][b.getCul()];
                             gameBoard[b.getRow() + 1][b.getCul()] = null;
                             gameBoard[b.getRow()][b.getCul()].addKill();
 
@@ -157,7 +155,7 @@ public class GameLogic implements PlayableLogic {
                 if (b.getRow() > 0 && (gameBoard[b.getRow() - 1][b.getCul()] != null) && (!gameBoard[b.getRow() - 1][b.getCul()].getType().equals(eater))) {
                     if ((b.getRow() - 1 == 0) || (b.getRow() > 1 && (gameBoard[b.getRow() - 2][b.getCul()] != null) && (gameBoard[b.getRow() - 2][b.getCul()].getType().equals(eater)))) {
                         if (!gameBoard[b.getRow() - 1][b.getCul()].getType().equals("♔")) {
-                            eatAr[2] = gameBoard[b.getRow()][b.getCul() + 1];
+                            eatAr[2] = gameBoard[b.getRow()-1][b.getCul()];
                             gameBoard[b.getRow() - 1][b.getCul()] = null;
                             gameBoard[b.getRow()][b.getCul()].addKill();
 
@@ -255,7 +253,6 @@ public class GameLogic implements PlayableLogic {
     @Override
     public boolean isGameFinished() {
         if (((kingP.getCul() == 0) || (kingP.getCul() == getBoardSize() - 1)) && ((kingP.getRow() == getBoardSize() - 1) || (kingP.getRow() == 0))) //Defenders win
-
         {
             printByMoves();
             printByEaten();
@@ -299,7 +296,6 @@ public class GameLogic implements PlayableLogic {
         for (int i = 3; i < 8; i++) {
             gameBoard[0][i] = new Pawn(p1);
             gameBoard[0][i].setId("A" + l,l);
-            gameBoard[0][i].getPlaces().push(new Position(0,i));
 
             l++;
             if (l == 12) {
@@ -307,91 +303,71 @@ public class GameLogic implements PlayableLogic {
             }
             gameBoard[i][0] = new Pawn(p1);
             gameBoard[i][0].setId("A" + j,j);
-            gameBoard[i][0].getPlaces().push(new Position(i,0));
 
             j++;
             gameBoard[this.BOARD_SIZE - 1][i] = new Pawn(p1);
             gameBoard[this.BOARD_SIZE - 1][i].setId("A" + l,l);
-            gameBoard[this.BOARD_SIZE-1][i].getPlaces().push(new Position(this.BOARD_SIZE-1,i));
 
             l++;
             gameBoard[i][this.BOARD_SIZE - 1] = new Pawn(p1);
             gameBoard[i][this.BOARD_SIZE - 1].setId("A" + k,k);
-            gameBoard[i][this.BOARD_SIZE-1].getPlaces().push(new Position(i,this.BOARD_SIZE-1));
             k++;
         }
         gameBoard[1][5] = new Pawn(p1);
         gameBoard[1][5].setId("A12",12);
-        gameBoard[1][5].getPlaces().push(new Position(1,5));
 
 
         gameBoard[5][1] = new Pawn(p1);
         gameBoard[5][1].setId("A6",6);
-        gameBoard[5][1].getPlaces().push(new Position(5,1));
 
 
         gameBoard[9][5] = new Pawn(p1);
         gameBoard[9][5].setId("A13",13);
-        gameBoard[9][5].getPlaces().push(new Position(9,5));
 
 
         gameBoard[5][9] = new Pawn(p1);
         gameBoard[5][9].setId("A19",19);
-        gameBoard[5][9].getPlaces().push(new Position(5,9));
 
 
         gameBoard[3][5] = new Pawn(p2);
         gameBoard[3][5].setId("D5",5);
-        gameBoard[3][5].getPlaces().push(new Position(3,5));
 
         gameBoard[4][4] = new Pawn(p2);
         gameBoard[4][4].setId("D2",2);
-        gameBoard[4][4].getPlaces().push(new Position(4,4));
 
         gameBoard[4][5] = new Pawn(p2);
         gameBoard[4][5].setId("D6",6);
-        gameBoard[4][5].getPlaces().push(new Position(4,5));
 
         gameBoard[4][6] = new Pawn(p2);
         gameBoard[4][6].setId("D10",10);
-        gameBoard[4][6].getPlaces().push(new Position(4,6));
 
         gameBoard[5][3] = new Pawn(p2);
         gameBoard[5][3].setId("D1",1);
-        gameBoard[5][3].getPlaces().push(new Position(5,3));
 
         gameBoard[5][4] = new Pawn(p2);
         gameBoard[5][4].setId("D3",3);
-        gameBoard[5][4].getPlaces().push(new Position(5,4));
 
         gameBoard[5][5] = new King(p2);
         gameBoard[5][5].setId("K7",7);
-        gameBoard[5][5].getPlaces().push(new Position(5,5));
 
         gameBoard[5][6] = new Pawn(p2);
         gameBoard[5][6].setId("D11",11);
-        gameBoard[5][6].getPlaces().push(new Position(5,6));
 
         gameBoard[5][7] = new Pawn(p2);
         gameBoard[5][7].setId("D13",13);
-        gameBoard[5][7].getPlaces().push(new Position(5,7));
 
         gameBoard[6][4] = new Pawn(p2);
         gameBoard[6][4].setId("D4",4);
-        gameBoard[6][4].getPlaces().push(new Position(6,4));
 
         gameBoard[6][5] = new Pawn(p2);
         gameBoard[6][5].setId("D8",8);
-        gameBoard[6][5].getPlaces().push(new Position(6,5));
 
         gameBoard[6][6] = new Pawn(p2);
         gameBoard[6][6].setId("D12",12);
-        gameBoard[6][6].getPlaces().push(new Position(6,6));
 
         gameBoard[7][5] = new Pawn(p2);
         gameBoard[7][5].setId("D9",9);
-        gameBoard[7][5].getPlaces().push(new Position(7,5));
-        
+
         pieces = new ArrayList<ConcretePiece>();
         posC = new Position[this.BOARD_SIZE][this.BOARD_SIZE];
         for (int i = 0; i < getBoardSize(); i++) {
@@ -405,7 +381,8 @@ public class GameLogic implements PlayableLogic {
                 }
             }
         }
-
+        p1.reset_eaten();
+        p2.reset_eaten();
     }
 
     @Override

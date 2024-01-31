@@ -10,6 +10,9 @@ public class ConcretePlayer implements Player{
         this.wins=0;
         eaten = new Stack<ConcretePiece[]>();
     }
+    public void addWin(){
+        this.wins++;
+    }
 
     @Override
     public boolean isPlayerOne() {

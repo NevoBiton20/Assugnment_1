@@ -8,86 +8,14 @@ public class GameLogic implements PlayableLogic {
     private final ConcretePlayer p1 = new ConcretePlayer(false);
     private final ConcretePlayer p2 = new ConcretePlayer(true);
     private ConcretePiece[][] gameBoard;
+    private Position[][] posC;
     private boolean turn;
     private Position kingP;
+    private ArrayList<ConcretePiece> pieces;
+    //private ArrayList<Position> steppedOn;
 
     public GameLogic() {
-        gameBoard = new ConcretePiece[this.BOARD_SIZE][this.BOARD_SIZE];
-        turn = false;
-        kingP = new Position(5, 5);
-        int j = 1;
-        int k = 20;
-        int l = 7;
-        for (int i = 3; i < 8; i++) {
-            gameBoard[0][i] = new Pawn(p1);
-            gameBoard[0][i].setId("A" + l,l);
-
-            l++;
-            if (l == 12) {
-                l = 14;
-            }
-            gameBoard[i][0] = new Pawn(p1);
-            gameBoard[i][0].setId("A" + j,j);
-            j++;
-            gameBoard[this.BOARD_SIZE - 1][i] = new Pawn(p1);
-            gameBoard[this.BOARD_SIZE - 1][i].setId("A" + l,l);
-            l++;
-            gameBoard[i][this.BOARD_SIZE - 1] = new Pawn(p1);
-            gameBoard[i][this.BOARD_SIZE - 1].setId("A" + k,k);
-            k++;
-        }
-        gameBoard[1][5] = new Pawn(p1);
-        gameBoard[1][5].setId("A12",12);
-
-        gameBoard[5][1] = new Pawn(p1);
-        gameBoard[5][1].setId("A6",6);
-
-        gameBoard[9][5] = new Pawn(p1);
-        gameBoard[9][5].setId("A13",13);
-
-        gameBoard[5][9] = new Pawn(p1);
-        gameBoard[5][9].setId("A19",19);
-
-
-        gameBoard[3][5] = new Pawn(p2);
-        gameBoard[3][5].setId("D5",5);
-
-        gameBoard[4][4] = new Pawn(p2);
-        gameBoard[4][4].setId("D2",2);
-
-        gameBoard[4][5] = new Pawn(p2);
-        gameBoard[4][5].setId("D6",6);
-
-        gameBoard[4][6] = new Pawn(p2);
-        gameBoard[4][6].setId("D10",10);
-
-        gameBoard[5][3] = new Pawn(p2);
-        gameBoard[5][3].setId("D1",1);
-
-        gameBoard[5][4] = new Pawn(p2);
-        gameBoard[5][4].setId("D3",3);
-
-        gameBoard[5][5] = new King(p2);
-        gameBoard[5][5].setId("D7",7);
-
-        gameBoard[5][6] = new Pawn(p2);
-        gameBoard[5][6].setId("D11",11);
-
-        gameBoard[5][7] = new Pawn(p2);
-        gameBoard[5][7].setId("D13",13);
-
-        gameBoard[6][4] = new Pawn(p2);
-        gameBoard[6][4].setId("D4",4);
-
-        gameBoard[6][5] = new Pawn(p2);
-        gameBoard[6][5].setId("D8",8);
-
-        gameBoard[6][6] = new Pawn(p2);
-        gameBoard[6][6].setId("D12",12);
-
-        gameBoard[7][5] = new Pawn(p2);
-        gameBoard[7][5].setId("D9",9);
-
+        reset();
     }
 
     @Override
@@ -95,14 +23,23 @@ public class GameLogic implements PlayableLogic {
         if (!isLegal(a, b)) {
             return false;
         }
+        if (posC[a.getRow()][a.getCul()].getStepped() == 0) {
+            posC[a.getRow()][a.getCul()].addStepped();
+        }
         int d = calcDistance(a,b);
         gameBoard[b.getRow()][b.getCul()] = gameBoard[a.getRow()][a.getCul()];
         gameBoard[b.getRow()][b.getCul()].addDistance(d);
         gameBoard[b.getRow()][b.getCul()].addPlace(b);
+        posC[b.getRow()][b.getCul()].addStepped();
+
+
+
+
         gameBoard[a.getRow()][a.getCul()] = null;
         turn = !turn;
         if (gameBoard[b.getRow()][b.getCul()].getType().equals("♔")) {
             kingP = new Position(b.getRow(), b.getCul());
+            isGameFinished();
             return true;
         }
         String eater = gameBoard[b.getRow()][b.getCul()].getType(); //capture check: fix can eat king
@@ -224,6 +161,8 @@ public class GameLogic implements PlayableLogic {
                 }
             }
         }
+
+        isGameFinished();
         return true;
     }
 
@@ -292,7 +231,13 @@ public class GameLogic implements PlayableLogic {
     @Override
     public boolean isGameFinished() {
         if (((kingP.getCul() == 0) || (kingP.getCul() == getBoardSize() - 1)) && ((kingP.getRow() == getBoardSize() - 1) || (kingP.getRow() == 0))) //Defenders win
+
         {
+            printByMoves();
+            printByEaten();
+            printPiecesByDistance();
+            printSteppedOn();
+            p1.addWin();
             return true;
         }
 
@@ -301,6 +246,11 @@ public class GameLogic implements PlayableLogic {
             if (kingP.getCul() == getBoardSize() - 1 || (kingP.getCul() < getBoardSize() - 1 && gameBoard[kingP.getRow()][kingP.getCul() + 1] != null && gameBoard[kingP.getRow()][kingP.getCul() + 1].getType().equals("♟"))) {
                 if (kingP.getRow() == 0 || (kingP.getRow() > 0 && gameBoard[kingP.getRow() - 1][kingP.getCul()] != null && gameBoard[kingP.getRow() - 1][kingP.getCul()].getType().equals("♟"))) {
                     if (kingP.getRow() == getBoardSize() || (kingP.getRow() < getBoardSize() && gameBoard[kingP.getRow() + 1][kingP.getCul()] != null && gameBoard[kingP.getRow() + 1][kingP.getCul()].getType().equals("♟"))) {
+                        p2.addWin();
+                        printByMoves();
+                        printByEaten();
+                        printPiecesByDistance();
+                        printSteppedOn();
                         return true;
                     }
                 }
@@ -316,9 +266,6 @@ public class GameLogic implements PlayableLogic {
 
     @Override
     public void reset() {
-        printByMoves(!turn);
-        printByEaten(!turn);
-        printPiecesByDistance();
         gameBoard = new ConcretePiece[this.BOARD_SIZE][this.BOARD_SIZE];
         turn = false;
         kingP = new Position(5, 5);
@@ -375,7 +322,7 @@ public class GameLogic implements PlayableLogic {
         gameBoard[5][4].setId("D3",3);
 
         gameBoard[5][5] = new King(p2);
-        gameBoard[5][5].setId("D7",7);
+        gameBoard[5][5].setId("K7",7);
 
         gameBoard[5][6] = new Pawn(p2);
         gameBoard[5][6].setId("D11",11);
@@ -394,8 +341,19 @@ public class GameLogic implements PlayableLogic {
 
         gameBoard[7][5] = new Pawn(p2);
         gameBoard[7][5].setId("D9",9);
+        pieces = new ArrayList<ConcretePiece>();
+        posC = new Position[this.BOARD_SIZE][this.BOARD_SIZE];
+        for (int i = 0; i < getBoardSize(); i++) {
+            for (int d = 0; d < getBoardSize(); d++) {
+                posC[i][d] = new Position(i, d);
 
+                if (gameBoard[i][d] != null) {
+                    pieces.add(gameBoard[i][d]);
+                    gameBoard[i][d].addPlace(new Position(i, d));
 
+                }
+            }
+        }
 
     }
 
@@ -414,27 +372,54 @@ public class GameLogic implements PlayableLogic {
         public int compare(ConcretePiece a, ConcretePiece b) {
             int cm = Integer.compare(a.getPlaces().size(), b.getPlaces().size());
             if (cm == 0) {
-                return Integer.compare(b.getNummericid(), a.getNummericid());
+                return Integer.compare(a.getNummericid(), b.getNummericid());
             }
             return cm;
         }
     }
     class SortByEaten implements Comparator<ConcretePiece>{
         public int compare(ConcretePiece a, ConcretePiece b) {
-            int cm = Integer.compare(a.getKillCount(), b.getKillCount());
+            boolean win = turn;
+            int cm = Integer.compare(b.getKillCount(), a.getKillCount());
             if (cm == 0) {
-                return Integer.compare(b.getNummericid(), a.getNummericid());
+                if (a.getOwner() == b.getOwner()) {
+                    return Integer.compare(b.getNummericid(), a.getNummericid());
+                }
+                else if(a.getOwner().isPlayerOne()==win) {
+                    return 1;
+                }
+                else return -1;
             }
             return cm;
         }
     }
     class SortByDistance implements Comparator<ConcretePiece>{
         public int compare(ConcretePiece a, ConcretePiece b) {
+            boolean win = !turn;
 
             int cm = Integer.compare(a.getDistance(), b.getDistance());
             if (cm == 0) {
-                return Integer.compare(b.getNummericid(), a.getNummericid());
+                if(Integer.compare(b.getNummericid(), a.getNummericid())==0){
+                    if(a.getOwner().isPlayerOne()==win){
+                        return 1;
+                    }
+                    else return -1;
+                }
+                else return Integer.compare(b.getNummericid(), a.getNummericid());
             }
+            return cm;
+        }
+    }
+
+    class SortByStepped implements Comparator<Position>{
+        public int compare(Position a, Position b) {
+            int cm = Integer.compare(a.getStepped(), b.getStepped());
+            if (cm == 0) {
+                if (Integer.compare(b.getCul(), a.getCul()) == 0) {
+                    return Integer.compare(b.getRow(), a.getRow());
+                } else return Integer.compare(b.getCul(), a.getCul());
+            }
+
             return cm;
         }
     }
@@ -454,72 +439,63 @@ public class GameLogic implements PlayableLogic {
         }
     }
 
-    public void printByMoves(boolean turn) {
-        ArrayList<ConcretePiece> pieces = new ArrayList<>();
-        for (int i = 0; i < getBoardSize(); i++) {
-            for (int j = 0; j < getBoardSize(); j++) {
-                if (gameBoard[i][j] != null) {
+    public void printByMoves() {
 
-                        pieces.add(gameBoard[i][j]);
-
-                }
-            }
-        }
         boolean currentP =!turn;
         pieces.sort(new SortByMoves());
-        for(int i = pieces.size()-1; i >0; i--){
-            if (!pieces.get(i).getPlaces().isEmpty() &&pieces.get(i).getOwner().isPlayerOne()==!currentP) {
+        for(int i = 0; i <pieces.size(); i++){
+            if ((pieces.get(i).getPlaces().size()>1) &&pieces.get(i).getOwner().isPlayerOne()==currentP) {
                 System.out.print(pieces.get(i).getId() + ": " + pieces.get(i).places.toString()+"\n");
             }
         }
 
-        for(int i = pieces.size()-1; i >0; i--){
-            if (!pieces.get(i).getPlaces().isEmpty() &&pieces.get(i).getOwner().isPlayerOne()==currentP) {
+        for(int i = 0; i <pieces.size(); i++){
+            if ((pieces.get(i).getPlaces().size()>1) &&pieces.get(i).getOwner().isPlayerOne()==!currentP) {
                 System.out.print(pieces.get(i).getId() + ": " + pieces.get(i).places.toString()+"\n");
             }
         }
 
-        System.out.print("\n");
+        System.out.print("***************************************************************************\n");
 
     }
 
-    public void printByEaten(boolean turn) {
-        ArrayList<ConcretePiece> pieces = new ArrayList<>();
-        for (int i = 0; i < getBoardSize(); i++) {
-            for (int j = 0; j < getBoardSize(); j++) {
-                if (gameBoard[i][j] != null) {
-                    pieces.add(gameBoard[i][j]);
+    public void printByEaten() {
 
-                }
-            }
-        }
         pieces.sort(new SortByEaten());
         for(int i = 0; i < pieces.size(); i++){
             if(pieces.get(i).getKillCount() != 0) {
                 System.out.print(pieces.get(i).getId() + ": " + pieces.get(i).getKillCount() + " kills\n");
             }
         }
+        System.out.print("***************************************************************************\n");
     }
 
     public int calcDistance(Position a, Position b){
         return Math.abs(a.getCul()-b.getCul())+Math.abs(a.getRow()-b.getRow());
     }
     public void printPiecesByDistance(){
-        ArrayList<ConcretePiece> pieces = new ArrayList<>();
-        for (int i = 0; i < getBoardSize(); i++) {
-            for (int j = 0; j < getBoardSize(); j++) {
-                if (gameBoard[i][j] != null) {
-
-                        pieces.add(gameBoard[i][j]);
-
-                }
-            }
-        }
         pieces.sort(new SortByDistance());
         for(int i = pieces.size()-1; i > 0; i--){
             if(pieces.get(i).getDistance() != 0) {
                 System.out.print(pieces.get(i).getId() + ": " + pieces.get(i).getDistance() + " squares\n");
             }
         }
+        System.out.print("***************************************************************************\n");
+    }
+
+    public void printSteppedOn(){
+        ArrayList<Position> steppedOn = new ArrayList<Position>();
+        for(int i = 0; i < getBoardSize(); i++){
+            for(int j = 0; j < getBoardSize(); j++){
+                if(posC[i][j].getStepped() > 1){
+                    steppedOn.add(posC[i][j]);
+                }
+            }
+        }
+        steppedOn.sort(new SortByStepped());
+        for(int i = steppedOn.size()-1; i >=0; i--){
+            System.out.print(steppedOn.get(i).toString() + "" + steppedOn.get(i).getStepped() + " pieces\n");
+        }
+        System.out.print("***************************************************************************\n");
     }
 }

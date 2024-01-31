@@ -15,6 +15,14 @@ public class Position {
         return this.cul;
     }
 
+    private int stepped = 0;
+    public void addStepped() {
+        this.stepped++;
+    }
+    public int getStepped() {
+        return this.stepped;
+    }
+
     public String toString() {
         return "(" + this.row + ", " + this.cul + ")";
     }

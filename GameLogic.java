@@ -3,6 +3,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Stack;
 
+
 public class GameLogic implements PlayableLogic {
     private final int BOARD_SIZE = 11;
     private final ConcretePlayer p1 = new ConcretePlayer(false);
@@ -391,13 +392,17 @@ public class GameLogic implements PlayableLogic {
         {
             ConcretePiece[] Revival = p1.getEaten().pop();
             Position p = Revival[0].getPlaces().pop();
+            posC[p.getRow()][p.getCul()].removeStepped();
             gameBoard[p.getRow()][p.getCul()]=null;
             gameBoard[Revival[0].getPlaces().peek().getRow()][Revival[0].getPlaces().peek().getCul()] = Revival[0];
+            Position p2 = new Position(Revival[0].getPlaces().peek().getRow(),Revival[0].getPlaces().peek().getCul());
+            gameBoard[p2.getRow()][p2.getCul()].remDistance(calcDistance(p,p2));
             for(int i=1;i<Revival.length;i++)
             {
                 if(Revival[i]!=null)
                 {
                     gameBoard[Revival[i].getPlaces().peek().getRow()][Revival[i].getPlaces().peek().getCul()] = Revival[i];
+                    gameBoard[Revival[0].getPlaces().peek().getRow()][Revival[0].getPlaces().peek().getCul()].removekill();
                 }
             }
             turn = !turn;
@@ -406,13 +411,17 @@ public class GameLogic implements PlayableLogic {
         {
             ConcretePiece[] Revival = p2.getEaten().pop();
             Position p = Revival[0].getPlaces().pop();
+            posC[p.getRow()][p.getCul()].removeStepped();
             gameBoard[p.getRow()][p.getCul()]=null;
             gameBoard[Revival[0].getPlaces().peek().getRow()][Revival[0].getPlaces().peek().getCul()] = Revival[0];
+            Position p2 = new Position(Revival[0].getPlaces().peek().getRow(),Revival[0].getPlaces().peek().getCul());
+            gameBoard[p2.getRow()][p2.getCul()].remDistance(calcDistance(p,p2));
             for(int i=1;i<Revival.length;i++)
             {
                 if(Revival[i]!=null)
                 {
                     gameBoard[Revival[i].getPlaces().peek().getRow()][Revival[i].getPlaces().peek().getCul()] = Revival[i];
+                    gameBoard[Revival[0].getPlaces().peek().getRow()][Revival[0].getPlaces().peek().getCul()].removekill();
                 }
             }
             turn = !turn;

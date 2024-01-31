@@ -27,4 +27,8 @@ public class ConcretePlayer implements Player{
     {
         return eaten;
     }
+    public void reset_eaten()
+    {
+        eaten = new Stack<ConcretePiece[]>();
+    }
 }

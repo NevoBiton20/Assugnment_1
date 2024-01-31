@@ -28,6 +28,7 @@ public abstract class ConcretePiece implements Piece{
     public void  addKill(){
         this.killCount++;
     }
+    public void removekill(){ this.killCount--;}
     public int getKillCount(){
         return this.killCount;
     }
@@ -53,6 +54,9 @@ public abstract class ConcretePiece implements Piece{
     }
     public int getDistance() {
         return distance;
+    }
+    public void remDistance(int dis){
+        this.distance = this.distance-dis;
     }
 
     public void addDistance(int distance) {

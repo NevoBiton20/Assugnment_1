@@ -510,13 +510,13 @@ public class GameLogic implements PlayableLogic {
         boolean currentP =!turn;
         pieces.sort(new SortByMoves());
         for(int i = 0; i <pieces.size(); i++){
-            if ((pieces.get(i).getPlaces().size()>1) &&pieces.get(i).getOwner().isPlayerOne()==currentP) {
+            if ((pieces.get(i).getPlaces().size()>1) &&pieces.get(i).getOwner().isPlayerOne()==!currentP) {
                 System.out.print(pieces.get(i).getId() + ": " + pieces.get(i).places.toString()+"\n");
             }
         }
 
         for(int i = 0; i <pieces.size(); i++){
-            if ((pieces.get(i).getPlaces().size()>1) &&pieces.get(i).getOwner().isPlayerOne()==!currentP) {
+            if ((pieces.get(i).getPlaces().size()>1) &&pieces.get(i).getOwner().isPlayerOne()==currentP) {
                 System.out.print(pieces.get(i).getId() + ": " + pieces.get(i).places.toString()+"\n");
             }
         }

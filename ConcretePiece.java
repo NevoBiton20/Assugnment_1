@@ -6,7 +6,7 @@ public abstract class ConcretePiece implements Piece{
     protected  int distance = 0;
     protected Player player;
     protected String type;
-    protected Stack<Position> places = new Stack<Position>();
+    protected Stack<Position> places;
     protected String id;
 
     public int getNummericid() {

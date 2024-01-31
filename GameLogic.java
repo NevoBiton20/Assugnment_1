@@ -23,6 +23,7 @@ public class GameLogic implements PlayableLogic {
         if (!isLegal(a, b)) {
             return false;
         }
+        ConcretePiece[] eatAr = new ConcretePiece[4];
         if (posC[a.getRow()][a.getCul()].getStepped() == 0) {
             posC[a.getRow()][a.getCul()].addStepped();
         }

@@ -2,7 +2,7 @@ public class Pawn extends ConcretePiece{
 
     public Pawn(Player player)
     {
-        this.places = new Stack<>();
+        this.places = new Stack<Position>();
         this.player=player;
         if(this.player.isPlayerOne())
         {

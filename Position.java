@@ -19,6 +19,9 @@ public class Position {
     public void addStepped() {
         this.stepped++;
     }
+    public void removeStepped() {
+        this.stepped--;
+    }
     public int getStepped() {
         return this.stepped;
     }
